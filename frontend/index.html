@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Controle de Validade</title>
+    <style>
+        body {
+            font-family: Arial;
+            padding: 20px;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px;
+        }
+
+        .vencido {
+            background-color: #ffcccc;
+        }
+
+        .proximo {
+            background-color: #fff3cd;
+        }
+
+        .valido {
+            background-color: #d4edda;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Controle de Validade</h2>
+
+<table id="tabela">
+    <thead>
+        <tr>
+            <th>Código</th>
+            <th>Produto</th>
+            <th>Grupo</th>
+            <th>Local</th>
+            <th>Quantidade</th>
+            <th>Validade</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+<script>
+fetch("http://127.0.0.1:8000/produtos")
+    .then(res => res.json())
+    .then(data => {
+        const tbody = document.querySelector("tbody");
+
+        data.forEach(p => {
+            let classe = "";
+
+            if (p.status === "Vencido") classe = "vencido";
+            if (p.status === "Proximo") classe = "proximo";
+            if (p.status === "Valido") classe = "valido";
+
+            const row = `
+                <tr class="${classe}">
+                    <td>${p.codigo}</td>
+                    <td>${p.nome_produto}</td>
+                    <td>${p.nome_grupo}</td>
+                    <td>${p.nome_local}</td>
+                    <td>${p.quantidade}</td>
+                    <td>${p.validade}</td>
+                    <td>${p.status}</td>
+                </tr>
+            `;
+
+            tbody.innerHTML += row;
+        });
+    });
+</script>
+
+</body>
+</html>

@@ -35,6 +35,20 @@
 
 <h2>Controle de Validade</h2>
 
+<h3>Cadastrar Produto</h3>
+
+<form id="form">
+    <input placeholder="Código" id="codigo"><br><br>
+    <input placeholder="Produto" id="nome_produto"><br><br>
+    <input placeholder="Grupo" id="nome_grupo"><br><br>
+    <input placeholder="Local" id="nome_local"><br><br>
+    <input type="number" placeholder="Quantidade" id="quantidade"><br><br>
+    <input type="date" id="recebimento"><br><br>
+    <input type="date" id="validade"><br><br>
+    
+    <button type="submit">Cadastrar</button>
+</form>
+
 <table id="tabela">
     <thead>
         <tr>
@@ -78,6 +92,36 @@ fetch("http://127.0.0.1:8000/produtos")
             tbody.innerHTML += row;
         });
     });
+</script>
+
+<script>
+document.getElementById("form").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const produto = {
+        codigo: document.getElementById("codigo").value,
+        nome_produto: document.getElementById("nome_produto").value,
+        nome_grupo: document.getElementById("nome_grupo").value,
+        nome_local: document.getElementById("nome_local").value,
+        quantidade: parseInt(document.getElementById("quantidade").value),
+        checkado: true,
+        recebimento: document.getElementById("recebimento").value,
+        validade: document.getElementById("validade").value
+    };
+
+    fetch("http://127.0.0.1:8000/produtos", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(produto)
+    })
+    .then(res => res.json())
+    .then(data => {
+        alert("Produto cadastrado!");
+        location.reload();
+    });
+});
 </script>
 
 </body>
